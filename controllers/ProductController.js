@@ -21,39 +21,43 @@ const addProductsController = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
-    ProductModel.find().then((data) => {
-        if(data.length !== 0) {
-            res.send(data);
-        }else {
-            res.json({message: "Coming soon!...watch out for your favourite products!..."});
-        }
-    });
+  ProductModel.find().then((data) => {
+    if (data.length !== 0) {
+      res.send(data);
+    } else {
+      res.json({
+        message: "Coming soon!...watch out for your favourite products!...",
+      });
+    }
+  });
 };
 
 const getProductByID = async (req, res) => {
-    ProductModel.find({ id: req.params.id }).then((data) => {
-        if(data.length !== 0) {
-            res.send(data[0]);
-        }else {
-            res.json({ message: "Selected product is not available!..." });
-        }
-    });
+  ProductModel.find({ id: req.params.id }).then((data) => {
+    if (data.length !== 0) {
+      res.send(data[0]);
+    } else {
+      res.json({ message: "Selected product is not available!..." });
+    }
+  });
 };
 
-const getProductsByCategory = async(req, res) => {
-    ProductModel.find({ category: req.params.category }).then((data) => {
-        if (data.length !== 0) {
-            res.send(data);
-        }else {
-            res.send({message: `Products not avaiable with cateogory`});
-        }
-    });
+const getProductsByCategory = async (req, res) => {
+  ProductModel.find({ category: req.params.category }).then((data) => {
+    try {
+      res.send({ message: `Products based on the category`, data });
+    } catch (error) {
+      res.send({
+        message: `unable to fetch the products based on category`,
+        error,
+      });
+    }
+  });
 };
-
 
 module.exports = {
-    addProductsController,
-    getAllProducts,
-    getProductByID,
-    getProductsByCategory
+  addProductsController,
+  getAllProducts,
+  getProductByID,
+  getProductsByCategory,
 };
